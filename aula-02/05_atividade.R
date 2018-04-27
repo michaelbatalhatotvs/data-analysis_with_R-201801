@@ -1,4 +1,4 @@
-### Atividade prática
+### Atividade prática - Michael Batalha 
 
 ## Vamos começar carregando um ambiente previamente criado para esta aula. 
 ## Nas aulas seguintes trabalharemos com fontes de dados em arquivos de formatos diversos.
@@ -6,12 +6,12 @@ load("aula-02/data/dados_exercicio.RData")
 
 ### 1 ####
 ## Inicie mostrando uma prévia do conteúdo da variável acessos_alunos
-## 
+##
 ## Dica 1: No material sobre estruturas de dados vimos como exibir uma prévia do conteúdo de uma variável com 2 funções diferentes
 ## Dica 2: Na primeira aula vimos uma função do RStudio que permite visualizar o conteúdo de uma variável, mas neste caso 
 ##         quero ver uma saída na Console.
 ### # ####
-
+str(acessos_alunos)
 
 
 ### 2 ###
@@ -19,6 +19,7 @@ load("aula-02/data/dados_exercicio.RData")
 
 ## Dica: Vimos um exemplo no mesmo material sobre estruturas de dados
 ### # ###
+length(acessos_alunos)
 
 
 
@@ -30,6 +31,7 @@ load("aula-02/data/dados_exercicio.RData")
 ## Dica 1: Utilize a função paste() para composição do texto que será impresso. 
 ## Dica 2: Vimos exemplos disto nos materiais dos tipos numéricos e das estruturas de dados.
 ### # ###
+paste("O aluno Michael Batalha realizou", acessos_alunos$alu201830155, "acessos")
 
 
 
@@ -39,17 +41,23 @@ acessos <- unlist(acessos_alunos)
 
 ## Após a criação deste vetor, determine quantos colegas fizeram mais acessos que você.
 ## Faça isso em 3 etapas: 
-## 1. Crie uma variável com o resultado de um teste de comparação (relacional) entre o seu número de acessos e os demais.
+## 1. Crie uma variável com o resultado de um teste de comparação (relacional) 
+##entre o seu número de acessos e os demais.
+teste_comparar <- acessos_alunos[acessos_alunos > acessos_alunos$alu201830155]
+
 ## 2. Com uma operação de indexação, crie um outro vetor contendo somente os valores maiores
+qtd_maiores_acessos <- acessos_alunos[acessos_alunos > acessos_alunos$alu201830155]
+
 ## 3. Determine o tamanho do vetor da operação 2, imprimindo o resultado na Console
 ### # ###
+length(qtd_maiores_acessos)
 
 
 
 ### 5 ###
 ## Combine todas as etapas acima em uma única chamada, sem a criação dos vetores auxiliares
 ### # ###
-
+print(length(acessos_alunos[acessos_alunos > acessos_alunos$alu201830155]))
 
 
 ### 6 ###
@@ -58,7 +66,7 @@ acessos <- unlist(acessos_alunos)
 
 ## Dica: Lembre que falamos sobre como o R faz conversões implícitas entre o tipo lógico e tipos numéricos
 ### # ###
-
+print(sum(acessos_alunos < acessos_alunos$alu201830155))
 
 
 ### 7 ###
@@ -71,6 +79,11 @@ acessos <- unlist(acessos_alunos)
 ## Dica: Pode ser mais fácil se iniciar o vetor notas como uma cópia do vetor acessos, modificando os valores conforme as regras
 ## OBSERVAÇÃO :: Não avaliarei participação na forma do enunciado deste exercício. 
 ### # ###
+notas<-unlist(acessos_alunos)
+notas[which(acessos_alunos == 0)] <- NA
+notas[which(acessos_alunos >= 1 & acessos_alunos < 10)] <- 1
+notas[which(acessos_alunos >= 10)] <- 2
+print(notas)
 
 
 
@@ -90,6 +103,27 @@ acessos_alunos_e_guest$guest <- NA
 ## Repita as atividades 4, 5, 6, e 7 utilizando o acessos_com_guest no lugar da lista acessos_alunos.
 ## Tome o devido cuidado de sempre criar variáveis com nomes diferentes das já utilizadas! 
 
+#INICIO:
+acessos_9 <- unlist(acessos_alunos_e_guest)
+
+teste_comparar_9 <- acessos_alunos_e_guest[acessos_alunos_e_guest > acessos_alunos_e_guest$alu201830155]
+
+qtd_maiores_acessos_9 <- acessos_alunos_e_guest[acessos_alunos_e_guest > acessos_alunos_e_guest$alu201830155]
+
+length(qtd_maiores_acessos_9)
+
+print(length(acessos_alunos_e_guest[acessos_alunos_e_guest > acessos_alunos_e_guest$alu201830155]))
+print(acessos_alunos_e_guest)
+
+print(sum(acessos_alunos_e_guest < acessos_alunos_e_guest$alu201830155))
+
+
+notas_9<-unlist(acessos_alunos_e_guest)
+notas_9[which(acessos_alunos_e_guest == 0)] <- NA
+notas_9[which(acessos_alunos_e_guest >= 1 & acessos_alunos_e_guest < 10)] <- 1
+notas_9[which(acessos_alunos_e_guest >= 10)] <- 2
+print(notas_9)
+#FIM
 
 
 ### 10 ###
@@ -97,12 +131,40 @@ acessos_alunos_e_guest$guest <- NA
 
 
 # 1. Houve modificação no número de alunos com mais e com menos acessos que você?
+#R.: SIM
 
 # 2. Como você conclui que o R trata comparações (operações relacionais) entre valores numéricos e NA?
+#R.: TRATOU COMO INDICE, NESSE CODIGO PERCEBE-SE(acessos_alunos_e_guest > acessos_alunos_e_guest$alu201830155) QUE FOI TRATADO COMO INDICE.
 
 # 3. Qual o resultado do uso da função sum na presença de NA? O que você conclui sobre a operação de soma de todos os valores de
 #    um vetor na presença de NA?
+#R.:
+print(sum(acessos_alunos_e_guest < acessos_alunos_e_guest$alu201830155))
+#R.: Seguindo o codigo acima, invalidou a soma de todos os valores dos vetores, resultado foi NA.
+#R.: Concluo que para usar a soma deve validar se é maior que 0, ou seja adicionar mais uma validação no SUM.
 
 # 4. Execute o comando abaixo para ler a documentação da função sum e veja se há como modificar a chamada da função sum na presença
 #    de NAs. Teste os exemplos da página de help da função sum.
 help(sum)
+
+
+print(sum(acessos_alunos_e_guest < acessos_alunos_e_guest$alu201830155))
+
+
+## Pass a vector to sum, and it will add the elements together.
+sum(1:5)
+
+## Pass several numbers to sum, and it also adds the elements.
+sum(1, 2, 3, 4, 5)
+
+## In fact, you can pass vectors into several arguments, and everything gets added.
+sum(1:2, 3:5)
+
+## If there are missing values, the sum is unknown, i.e., also missing, ....
+sum(1:5, NA)
+
+## ... unless  we exclude missing values explicitly:
+sum(1:5, NA, na.rm = TRUE)
+
+#BOA, poderiamos enviar o parametro TRUE, o que eu disse anteriormente foi validar junto no SUM para rejeitar os valores NA ou zeros. 
+#Mas com o parametro TRUE facilita a vida.
