@@ -189,7 +189,6 @@ subset_com_ano %>%
   summarise(media_salarial = mean(REMUNERACAO_REAIS)) %>%
   arrange(desc(media_salarial))
 
->>>>>>> upstream/master
 
 
 #' >> FIM DA ATIVIDADE
