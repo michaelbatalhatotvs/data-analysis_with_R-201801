@@ -156,7 +156,6 @@ subset_com_ano <- subset_salarios %>%
   mutate(ano_ingresso = year(DATA_DIPLOMA_INGRESSO_SERVICOPUBLICO)) 
 
 ## Determine o tempo médio de trabalho em anos, em nível nacional
-<<<<<<< HEAD
 subset_Com_ano %>%
   summarise(tempo_medio = mean( year(today()) - ano_ingresso))
 
@@ -173,7 +172,7 @@ subset_Com_ano %>%
   group_by(ano_ingresso)  %>%
   summarise(media_salarial = mean(REMUNERACAO_REAIS))  %>%
   arrange(desc(ano_ingresso))  %>% View()
-=======
+
 subset_com_ano %>%
   summarise(tempo_medio = mean(year(today()) - ano_ingresso))
 
@@ -198,7 +197,9 @@ subset_com_ano %>%
 #' A mediana é o elemento central do conjunto (**ordenado**) de valores de uma variável.
 #' 
 #' * A figura do elemento central só existe quando o número de observações é ímpar!
-#' * Quando o tamanho for par, o elemento central por definicão será a média entre os dois valores mais ao centro. Algumas variações assumem o menor dentre os dois valores, ou o maior dentre os dois valores.
+#' * Quando o tamanho for par, o elemento central por definicão será a média entre os dois 
+#' valores mais ao centro. Algumas variações assumem o menor dentre os dois valores, 
+#' ou o maior dentre os dois valores.
 #' 
 #' Em R:
 ## ----eval=FALSE----------------------------------------------------------
@@ -231,17 +232,56 @@ subset_salarios %>%
 #' 
 #' __Atividade I__
 #' 
-#' Crie um novo dataset contendo a média e a mediana do salário por UF. Adicione uma nova variável determinando, para cada UF, se a média é maior ou menor que a mediana. Ao final, exiba a quantidade de UFs onde a mediana foi maior que a média.
+#' Crie um novo dataset contendo a média e a mediana do salário por UF.
+#'  Adicione uma nova variável determinando, para cada UF, se a média é maior ou menor 
+#'  que a mediana. 
+#'  Ao final, exiba a quantidade de UFs onde a mediana foi maior que a
+#'   média.
 #' 
 ## ------------------------------------------------------------------------
 print("Atividade")
 
-## Código aqui
+## Código aqui batalha:
 
+subset_Com_ano %>%
+  group_by(UF_EXERCICIO)  %>%
+  summarise(media1 = mean(subset_salarios$REMUNERACAO_REAIS) ) %>%
+ View()
+
+subset_Com_ano %>%
+  group_by(UF_EXERCICIO)  %>%
+  summarise(mediana1 = median(subset_salarios$REMUNERACAO_REAIS) ) %>%
+  View()
+
+#' opacao 1
+  subset_salarios %>%
+  group_by(UF_EXERCICIO)  %>%
+  summarise(salario_medio =  mean(subset_salarios$REMUNERACAO_REAIS)
+            , servidores = n()
+            , mediana_salario = median(subset_salarios$REMUNERACAO_REAIS)
+            , media_maior = salario_medio > mediana_salario) %>%
+  ungroup()%>%
+  count(media_maior) -> total_media_maior
+
+  #' opcao 2
+  subset_salarios %>%
+  group_by(UF_EXERCICIO)  %>%
+  summarise(salario_medio =  mean(subset_salarios$REMUNERACAO_REAIS)
+            , servidores = n()
+            , mediana_salario = median(subset_salarios$REMUNERACAO_REAIS)
+            , media_maior = salario_medio > mediana_salario) %>%
+  ungroup()%>%
+  group_by(media_maior)%>%
+  summarise(total = n())%>%
+  ungroup()
+
+  
 #' 
 #' __Atividade II__
 #' 
-#' Qual sua justificativa para a quantidade de casos onde a mediana foi maior que a média? Dica: Observe o gráfico que mostra a média e a mediana. Há cauda longa? Em qual direção?
+#' Qual sua justificativa para a quantidade de casos onde a mediana foi maior 
+#' que a média? Dica: Observe o gráfico que mostra a média e a mediana. 
+#' Há cauda longa? Em qual direção?
 #' 
 #' ``` SUA RESPOSTA AQUI ```
 #' 
@@ -322,24 +362,72 @@ subset_salarios %>%
 #' 
 #' __Atividade I__
 #' 
-#' A [Inequalidade de Chebyshev](https://en.wikipedia.org/wiki/Standard_deviation#Chebyshev's_inequality) afirma que, para distribuições de probabilidade onde o Desvio Padrão é definido, 2 Desvios Padrão da média devem absorver pelo menos 75% do tamanho da amostra.
+#' A [Inequalidade de Chebyshev](https://en.wikipedia.org/wiki/Standard_deviation#Chebyshev's_inequality) a
+#firma que, para distribuições de probabilidade onde o 
+#' Desvio Padrão é definido, 2 Desvios Padrão da média devem absorver pelo 
+#' menos 75% do tamanho da amostra.
 #' 
 #' Verifique a validade deste teorema com os valores calculados.
 #' 
 ## ------------------------------------------------------------------------
 print("Atividade")
 
+dois_desvios <- 2 * sd(subset_salarios$REMUNERACAO_REAIS)  
+
+media <- mean(subset_salarios$REMUNERACAO_REAIS)
+  
+dois_desvios_da_media <- media + dois_desvios
+
+  #' minha
+subset_salarios %>%
+  filter(REMUNERACAO_REAIS <= dois_desvios_da_media) %>%
+  nrow() -> total_dentro_de_dois_desvios
+
+total_dentro_de_dois_desvios / nrow(subset_salarios)
+
+
+
+  
 ## Código aqui
 
 #' 
 #' __Atividade II__
 #' 
-#' No dataset de salários temos os diferentes cargos ocupados pelos servidores públicos federais. Liste os 10 cargos de __menor coeficiente de variação__ cujo cargo tenha mais que 100 servidores públicos. A lista deve conter, além do cargo e Coeficiente de Variação, a quantidade de servidores, o menor salário, o maior salário, o salário médio e o desvio padrão.
+#' No dataset de salários temos os diferentes cargos ocupados pelos servidores públicos federais.
+#'  Liste os 10 cargos de __menor coeficiente de variação__ cujo cargo tenha mais que 100 servidores públicos. 
+#'   A lista deve conter, além do cargo e Coeficiente de Variação, 
+#'   a quantidade de servidores, o menor salário, o maior salário, o salário médio
+#'    e o desvio padrão.
 #' 
 ## ------------------------------------------------------------------------
 print("Atividade")
-
 ## Código aqui
+
+#' opção 1
+subset_salarios %>%
+  group_by(DESCRICAO_CARGO) %>%
+  summarise(dois_desv = 2 * sd(subset_salarios$REMUNERACAO_REAIS)
+            , media_desv = mean(subset_salarios$REMUNERACAO_REAIS)) %>%
+  ungroup()
+
+
+#' opção 2
+subset_salarios %>%
+  group_by(DESCRICAO_CARGO) %>%
+  filter(n() > 100)%>%
+  summarise(desvio_padrao = sd(REMUNERACAO_REAIS)  
+            , media = mean(REMUNERACAO_REAIS)
+            , cv = desvio_padrao / media
+            , qtde_servidores = n()
+            , menor_salario = min(REMUNERACAO_REAIS)
+            , maior_Salario = max(REMUNERACAO_REAIS)) %>%
+  ungroup()%>%
+  arrange(cv)%>%
+  head(10)
+
+
+
+
 
 #' 
 #' __Atividade III__
@@ -350,6 +438,20 @@ print("Atividade")
 print("Atividade")
 
 ## Código aqui
+
+subset_salarios %>%
+  group_by(DESCRICAO_CARGO) %>%
+  filter(n() > 100)%>%
+  summarise(desvio_padrao = sd(REMUNERACAO_REAIS)  
+            , media = mean(REMUNERACAO_REAIS)
+            , cv = desvio_padrao / media
+            , qtde_servidores = n()
+            , menor_salario = min(REMUNERACAO_REAIS)
+            , maior_Salario = max(REMUNERACAO_REAIS)) %>%
+  ungroup()%>%
+  arrange(cv)%>%
+  tail(10)
+
 
 #' 
 #' ![](https://mathwithbaddrawings.files.wordpress.com/2016/07/20160712085402_00021.jpg)
