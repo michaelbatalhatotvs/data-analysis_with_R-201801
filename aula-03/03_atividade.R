@@ -14,6 +14,13 @@ salarios <- read_csv("aula-03/data/201802_dados_salarios_servidores.csv.gz")
 ## 
 ### # ####
 
+salarios %>%
+  select(REMUNERACAO_REAIS, REMUNERACAO_DOLARES) %>%
+  mutate(remu_final = REMUNERACAO_REAIS + ( REMUNERACAO_DOLARES * 3.25)) ->
+  subset_salarios
+
+subset_salarios %>% filter(remu_final > 900)
+
 
 ### 2 ####
 ## 
@@ -23,8 +30,17 @@ salarios <- read_csv("aula-03/data/201802_dados_salarios_servidores.csv.gz")
 ## 
 ## Dica: a função pull() do dplyr extrai uma variável em formato de vetor.
 salarios %>% count(UF_EXERCICIO) %>% pull(UF_EXERCICIO) -> ufs # EXEMPLO
-## 
-### # ####
+
+salarios %>%
+  filter(!is.na(UF_EXERCICIO)) %>%
+  group_by(DESCRICAO_CARGO) %>%
+  summarise(qtde = n()) %>%
+  ungroup()->
+  outras_lotacoes
+
+outras_lotacoes %>% arrange(desc(qtde)) -> maiores_cargos
+
+head(maiores_cargos, 5)
 
 
 ### 3 ####
@@ -44,6 +60,7 @@ salarios %>% count(UF_EXERCICIO) %>% pull(UF_EXERCICIO) -> ufs # EXEMPLO
 ## 
 ## Dica 1: o operador %in% testa se valores de uma variável pertencem ao conjunto de valores de um vetor. Lembre que deve ser utilizada a variável cargos_diferente_lotacao
 salarios %>% filter(DESCRICAO_CARGO %in% c("MINISTRO DE PRIMEIRA CLASSE", "ANALISTA DE TEC DA INFORMACAO", "PESQUISADOR")) %>% count(DESCRICAO_CARGO) # EXEMPLO
+
 ## Dica 2: Será necessário agrupar (group_by) por mais de uma variável para calcular as estatísticas solicitadas. 
 ## A função group_by permite múltiplos nomes de variáveis na mesma chamada.
 ## 
