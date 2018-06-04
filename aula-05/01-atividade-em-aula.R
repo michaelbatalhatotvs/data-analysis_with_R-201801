@@ -1,16 +1,32 @@
 # Carregue a biblioteca tidyverse. Lembre que outras bibliotecas serão carregadas junto ao tidyverse
-
+library(tidyverse)
+library(lubridate)
 
 
 
 # Crie um dataframe com o conteúdo do arquivo ted_main.csv.gz. 
+TED_MAIN <- read_csv("aula-05/data/ted_main.csv.gz")
 
-
-
-
-# Visualize o resumo dos dados do dataframe. Verifique os mínimos, máximos, médias e medianas das variáveis numéricas.
+# Visualize o resumo dos dados do dataframe. Verifique os mínimos, 
+#máximos, médias e medianas das variáveis numéricas.
 # As variáveis duration, film_date e published_date estão no tipo de dados apropriado?
+TED_MAIN %>%summarise(TED_duration_minima = min(duration))
 
+TED_MAIN %>%summarise(TED_film_date_minima = min(film_date))
+
+TED_MAIN %>%summarise(TED_published_date_minima = min(published_date))
+
+TED_MAIN %>%summarise(TED_duration_maximo = max(duration))
+
+TED_MAIN %>%summarise(TED_film_date_maximo = max(film_date))
+
+TED_MAIN %>%summarise(TED_published_date_maximo = max(published_date))
+
+TED_MAIN %>%summarise(TED_duration_media = mean(duration))
+
+TED_MAIN %>%summarise(TED_film_date_media = mean(film_date))
+
+TED_MAIN %>%summarise(TED_published_date_media = mean(published_date))
 
 
 
