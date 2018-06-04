@@ -12,7 +12,7 @@ salarios <- read_csv("aula-03/data/201802_dados_salarios_servidores.csv.gz")
 ## Atenção: Para conversão, utilize a Cotação Comercial do Dólar no último dia útil de Fevereiro.
 ## Após criar esta coluna, descarte todos os registros cuja Remuneração Final for menor que R$ 900,00
 ## 
-### # ####
+### # ####TESTE COMMIT.
 
 salarios %>%
   select(REMUNERACAO_REAIS, REMUNERACAO_DOLARES) %>%
