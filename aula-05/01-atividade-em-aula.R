@@ -31,10 +31,16 @@ TED_MAIN %>%summarise(TED_published_date_media = mean(published_date))
 
 
 # Converta as seguintes variáveis utilizando o pacote Lubridate:
-#     * duration, para duração (em segundos). Experimente utilizar as funções as.duration e duration. Mantenha aquela que considerar mais apropriada.
+#     * duration, para duração (em segundos). 
+#Experimente utilizar as funções as.duration e duration. 
+#Mantenha aquela que considerar mais apropriada.
 #     * film_date, para data, com a função as_datetime.
 #     * published_date, para data, com a função as_datetime..
-
+ted_talk %>% 
+  mutate( duration = duration(duration),
+          published_date = (as_datetime(published_date)) ,
+          film_date = (as_datetime(film_date)) 
+  ) -> ted_talk
 
 
 
