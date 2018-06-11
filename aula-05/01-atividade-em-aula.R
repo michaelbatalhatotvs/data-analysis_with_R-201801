@@ -2,14 +2,17 @@
 library(tidyverse)
 library(lubridate)
 
-
-
 # Crie um dataframe com o conteúdo do arquivo ted_main.csv.gz. 
 TED_MAIN <- read_csv("aula-05/data/ted_main.csv.gz")
+
+
+#View(TED_MAIN)
 
 # Visualize o resumo dos dados do dataframe. Verifique os mínimos, 
 #máximos, médias e medianas das variáveis numéricas.
 # As variáveis duration, film_date e published_date estão no tipo de dados apropriado?
+#filme_Date e published_date deveriam ser em anos.
+
 TED_MAIN %>%summarise(TED_duration_minima = min(duration))
 
 TED_MAIN %>%summarise(TED_film_date_minima = min(film_date))
@@ -36,23 +39,27 @@ TED_MAIN %>%summarise(TED_published_date_media = mean(published_date))
 #Mantenha aquela que considerar mais apropriada.
 #     * film_date, para data, com a função as_datetime.
 #     * published_date, para data, com a função as_datetime..
-ted_talk %>% 
+TED_MAIN %>% 
   mutate( duration = duration(duration),
           published_date = (as_datetime(published_date)) ,
           film_date = (as_datetime(film_date)) 
-  ) -> ted_talk
-
+  ) -> TED_MAIN
 
 
 # Converta as seguintes variáveis character para variáveis categóricas com a função factor.
 #     * event
 #     * speaker_occupation
+TED_MAIN %>%
+  mutate( event = factor(event),
+          speaker_occupation = factor(speaker_occupation)
+          )-> TED_MAIN
 
 
 
 
 # Retire do dataframe a variável name
-
+TED_MAIN %>%
+    select( -name) -> TED_MAIN
 
 
 
