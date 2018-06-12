@@ -10,6 +10,7 @@ TED_MAIN <- read_csv("aula-05/data/ted_main.csv.gz")
 
 # Visualize o resumo dos dados do dataframe. Verifique os mínimos, 
 #máximos, médias e medianas das variáveis numéricas.
+
 # As variáveis duration, film_date e published_date estão no tipo de dados apropriado?
 #filme_Date e published_date deveriam ser em anos.
 
@@ -46,6 +47,8 @@ TED_MAIN %>%
   ) -> TED_MAIN
 
 
+
+
 # Converta as seguintes variáveis character para variáveis categóricas com a função factor.
 #     * event
 #     * speaker_occupation
@@ -63,38 +66,59 @@ TED_MAIN %>%
 
 
 
-# Visualize novamente o resumo dos dados do dataframe. Verifique os mínimos, máximos, médias e medianas das variáveis numéricas. Verifique as contagens das variáveis categóricas
+# Visualize novamente o resumo dos dados do dataframe. 
+#Verifique os mínimos, máximos, médias e medianas das variáveis numéricas. 
+#Verifique as contagens das variáveis categóricas
+TED_MAIN %>%
+  summary()
 
 
 
 
-# Verifique quais registros possuem a menor quantidade de línguas. Corrija para que possuam no mínimo 1 idioma.
 
+# Verifique quais registros possuem a menor quantidade de línguas. 
+#Corrija para que possuam no mínimo 1 idioma.
+TED_MAIN %>% 
+  filter(languages == 0) %>%
+  mutate(languages = 1) %>%
+  select(description, languages)
 
 
 
 # Verifique os 15 registros com menor data de filmagem. 
-
+TED_MAIN %>%
+  arrange(film_date) %>%
+  head(15)
 
 
 
 # Crie um dataframe com a contagem de apresentações por ano de filmagem e visualize todo o seu conteúdo
-
+TED_MAIN %>% 
+  group_by(year(film_date)) %>%
+  summarise(qtde = n()) %>%
+  ungroup() -> x
 
 
 # Analise os 10 quantis da quantidade de apresentações por ano.
 # Descarte, do data frame de apresentações do TED Talks, aqueles cujo ano de filmagem tiver quantidade de apresentações menor ou igual à quantidade do quarto quantil.
+quantile(x$qtde, probs = seq(from=0.1, to=1, by=0.1))
 
+TED_MAIN %>% 
+  filter(year(film_date) > 2003) -> maiores_ted_talks
 
 
 
 # Verifique novamente o resumo dos dados do dataframe
+maiores_ted_talks %>%
+  summary()
 
 
 
 
 # Verifique os 10 registros com maior duração.
-
+maiores_ted_talks %>%
+  arrange(duration) %>%
+  tail(10)
 
 
 
