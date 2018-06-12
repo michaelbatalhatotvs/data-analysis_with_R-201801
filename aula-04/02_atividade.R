@@ -1,7 +1,7 @@
 library(tidyverse)
 library(lubridate)
 library(dplyr)
-
+  
 ## Nesta atividade você deve utilizar o resultado do exercício 01 da Atividade da aula 03
 ##(remuneração em dólares convertida para reais)
 ## Utilize o código daquele exercício como ponto de partida para esta atividade. 
